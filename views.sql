@@ -1,5 +1,76 @@
-CREATE VIEW safe_to_see_component AS SELECT ID, reference, quantity, date_checked, category, sub_category FROM component_manager.component;
+CREATE VIEW component_manager.category_sub_category_view AS
+SELECT 
+    c.uuid AS category_uuid,
+    c.categoryName,
+    sc.uuid AS sub_category_uuid,
+    sc.subCategoryName
+FROM 
+    component_manager.category c
+JOIN 
+    component_manager.sub_category sc
+ON 
+    c.uuid = sc.parent;
 
-CREATE VIEW safe_to_see_sub_component_only AS SELECT super_uuid, (SELECT first_name FROM members WHERE members.uuid = component_manager.sub_component) AS place, note FROM component_manager.sub_component; --missing from-clause entry for table "component_manager"
+CREATE VIEW component_manager.component_category_view AS
+SELECT 
+    comp.uuid AS component_uuid,
+    comp.reference,
+    comp.quantity,
+    comp.date_checked,
+    cat.uuid AS category_uuid,
+    cat.categoryName
+FROM 
+    component_manager.component comp
+JOIN 
+    component_manager.category cat
+ON 
+    comp.category = cat.uuid;
 
-CREATE VIEW safe_to_see_sub_component AS SELECT * FROM safe_to_see_component JOIN safe_to_see_sub_component_only ON safe_to_see_component.uuid = safe_to_see_sub_component_only.super_uuid; --relation safe to see component add tmrw
+CREATE VIEW component_manager.component_sub_category_view AS
+SELECT 
+    comp.uuid AS component_uuid,
+    comp.reference,
+    comp.quantity,
+    comp.date_checked,
+    sc.uuid AS sub_category_uuid,
+    sc.subCategoryName
+FROM 
+    component_manager.component comp
+JOIN 
+    component_manager.sub_category sc
+ON 
+    comp.sub_category = sc.uuid;
+
+CREATE VIEW component_manager.sub_component_component_view AS
+SELECT 
+    sc.uuid AS sub_component_uuid,
+    sc.note,
+    comp.uuid AS component_uuid,
+    comp.reference
+FROM 
+    component_manager.sub_component sc
+JOIN 
+    component_manager.component comp
+ON 
+    sc.super_uuid = comp.uuid;
+
+CREATE VIEW component_manager.sub_component_component_members_view AS
+SELECT 
+    sc.uuid AS sub_component_uuid,
+    sc.place,
+    sc.note,
+    comp.uuid AS component_uuid,
+    comp.reference,
+    m.uuid AS member_uuid,
+    m.first_name,
+    m.last_name
+FROM 
+    component_manager.sub_component sc
+JOIN 
+    component_manager.component comp
+ON 
+    sc.super_uuid = comp.uuid
+JOIN 
+    component_manager.members m
+ON 
+    sc.place = m.uuid;
