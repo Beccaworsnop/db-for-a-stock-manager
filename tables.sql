@@ -6,19 +6,19 @@ CREATE SCHEMA component_manager;
 -- Create 5 tables with UUID as primary key
 
 CREATE TABLE component_manager.category (
-    uuid UUID PRIMARY KEY,
+    uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     categoryName VARCHAR(50) NOT NULL UNIQUE -- ADD CITEXT INSTEAD OF VARCHAR ? 
 );
 
 CREATE TABLE component_manager.sub_category (
-    uuid UUID PRIMARY KEY,
+    uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     subCategoryName VARCHAR(50) NOT NULL, 
     parent UUID NOT NULL,
     FOREIGN KEY (parent) REFERENCES component_manager.category(uuid)
 );
 
 CREATE TABLE component_manager.component (
-    uuid UUID PRIMARY KEY,
+    uuid UUID DEFAULT gen_random_uuid PRIMARY KEY,
     ID VARCHAR(50) GENERATED ALWAYS AS 
        (UPPER(SUBSTRING(category::text, 1, 2) || SUBSTRING(sub_category::text, 1, 2))) STORED,
     reference VARCHAR(50) NOT NULL UNIQUE,
