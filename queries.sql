@@ -18,3 +18,14 @@ BEGIN
     END IF;
 END;
 $$;
+
+
+-- Test views 
+SELECT * FROM component_manager.component_category_view;
+
+SELECT * FROM component_manager.component_sub_category_view;
+
+SELECT * FROM component_manager.sub_component_component_view;
+
+SELECT * FROM component_manager.sub_component_component_members_view;
+
