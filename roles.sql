@@ -1,6 +1,5 @@
 CREATE ROLE user WITH LOGIN PASSWORD 'password';
-CREATE ROLE student WITH LOGIN PASSWORD 'password'; ...
-
+CREATE ROLE student WITH LOGIN PASSWORD 'password'; 
 
 REVOKE ALL ON DATABASE companyname FROM student;
 REVOKE ALL ON SCHEMA component_manager FROM student;
