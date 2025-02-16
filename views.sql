@@ -1,9 +1,9 @@
 CREATE VIEW component_manager.category_sub_category_view AS
 SELECT 
     c.uuid AS category_uuid,
-    c.categoryName,
+    c.category_name,
     sc.uuid AS sub_category_uuid,
-    sc.subCategoryName
+    sc.sub_category_name
 FROM 
     component_manager.category c
 JOIN 
@@ -18,7 +18,7 @@ SELECT
     comp.quantity,
     comp.date_checked,
     cat.uuid AS category_uuid,
-    cat.categoryName
+    cat.category_name
 FROM 
     component_manager.component comp
 JOIN 
@@ -33,7 +33,7 @@ SELECT
     comp.quantity,
     comp.date_checked,
     sc.uuid AS sub_category_uuid,
-    sc.subCategoryName
+    sc.sub_category_name
 FROM 
     component_manager.component comp
 JOIN 
@@ -57,7 +57,7 @@ ON
 CREATE VIEW component_manager.sub_component_component_members_view AS
 SELECT 
     sc.uuid AS sub_component_uuid,
-    sc.place,
+    sc.place AS member_uuid,  
     sc.note,
     comp.uuid AS component_uuid,
     comp.reference,
@@ -74,3 +74,4 @@ JOIN
     component_manager.members m
 ON 
     sc.place = m.uuid;
+
