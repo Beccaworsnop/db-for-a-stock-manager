@@ -1,4 +1,4 @@
-CREATE VIEW component_manager.category_sub_category_view AS
+CREATE OR REPLACE VIEW component_manager.category_sub_category_view AS
 SELECT 
     c.uuid AS category_uuid,
     c.category_name,
@@ -11,7 +11,7 @@ JOIN
 ON 
     c.uuid = sc.parent;
 
-CREATE VIEW component_manager.component_category_view AS
+CREATE OR REPLACE VIEW component_manager.component_category_view AS
 SELECT 
     comp.uuid AS component_uuid,
     comp.reference,
@@ -26,7 +26,7 @@ JOIN
 ON 
     comp.category = cat.uuid;
 
-CREATE VIEW component_manager.component_sub_category_view AS
+CREATE OR REPLACE VIEW component_manager.component_sub_category_view AS
 SELECT 
     comp.uuid AS component_uuid,
     comp.reference,
@@ -41,9 +41,10 @@ JOIN
 ON 
     comp.sub_category = sc.uuid;
 
-CREATE VIEW component_manager.sub_component_component_view AS
+CREATE OR REPLACE VIEW component_manager.sub_component_component_view AS
 SELECT 
     sc.uuid AS sub_component_uuid,
+    sc.place AS person_name,  
     sc.note,
     comp.uuid AS component_uuid,
     comp.reference
@@ -54,24 +55,16 @@ JOIN
 ON 
     sc.super_uuid = comp.uuid;
 
-CREATE VIEW component_manager.sub_component_component_members_view AS
+CREATE OR REPLACE VIEW component_manager.sub_component_component_members_view AS
 SELECT 
     sc.uuid AS sub_component_uuid,
-    sc.place AS member_uuid,  
+    sc.place AS person_name,  
     sc.note,
     comp.uuid AS component_uuid,
-    comp.reference,
-    m.uuid AS member_uuid,
-    m.first_name,
-    m.last_name
+    comp.reference
 FROM 
     component_manager.sub_component sc
 JOIN 
     component_manager.component comp
 ON 
-    sc.super_uuid = comp.uuid
-JOIN 
-    component_manager.members m
-ON 
-    sc.place = m.uuid;
-
+    sc.super_uuid = comp.uuid;
